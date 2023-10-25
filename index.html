@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap.css">
+    <script src="jquery-3.7.1.min.js"></script>
+    <title>Document</title>
+    <style>
+        :root{
+            --red:#f0735c;
+            --lightblue : #39d1b4;
+            --gry : #efeddf;
+            --lightgray:#e4e3d5;
+            --darkgry : #666666;
+        }
+        body{
+            background-color: var(--gry);
+        }
+        .border-bottom{
+            border-bottom: 1px solid  rgba(var(--bs-secondary-rgb)) !important;
+        }
+        .task-div{
+            background-color: white; 
+            border-top: 7px solid var(--lightblue);
+            height: 70px;
+        }
+        .task-div:hover{
+            border-top-color: var(--red);
+        }
+        .complete{
+            text-decoration: line-through;
+            border-top-color:var(--darkgry) ;
+            opacity: 0.5;
+        }
+        .complete:hover{
+            opacity: 0.7;
+        }
+        input{
+            outline-color: var(--red);
+            border: 1px solid var(--lightgray);
+        }
+        .add{
+            background-color: var(--red);
+            border-color: var(--red);
+        }
+        .clear{
+            background-color: var(--lightgray);
+            border-color: 1px solid gray;
+        }
+        .clear button{
+            background-color: var(--darkgry);
+            opacity: 0.5;
+        }
+        .clear button:hover{
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row g-1">
+            <div class="col-10">
+                <input class="col-12 py-3 px-2" type="text" placeholder="INSERT YOUR LIST ITEMS HERE">
+            </div>
+            <div class="col-2">
+                <button class="add col-12 btn h-100 text-light">Create List</button>
+            </div>
+        </div>
+        <div class="no-list row mt-5">
+            <div class="d-flex flex-column align-items-center text-secondary">
+                <span>NO LIST YET</span>
+                <img src="logo2.png" width="80">
+            </div>
+        </div>
+        <div class="list d-none row mt-5">
+            <h3 class="col-12 text-secondary text-center border-bottom pb-4">TODAY'S TASKS</h3>
+                <div class="tasks row row-cols-1 row-cols-md-2 g-2">
+                    
+                </div>
+        </div>
+        <div class="clear mt-5 border py-2 d-none">
+            <div class="row">
+                <div class="col text-center">
+                    <span> **SINGLE CLICK TO MARK COMPLETE </span>
+                </div>
+                <div class="col">
+                    <span> **DOUBLE CLICK TO REMOVE FROM LIST</span>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <button class="btn text-light">CLEAR ALL TASKS</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            function check(){
+                if($('.tasks div').length == 0){
+                    $('.no-list,.list,.clear').toggleClass('d-none');
+                    }
+            }
+            $('.add').click(function(){
+                if($('input').val() == ""){
+                    alert("please enter a task");
+                }
+                else{
+                    check();
+                    $('.tasks').append(`
+                    <div class="col">
+                        <div class="col-12 task-div px-3 d-flex align-items-center justify-content-between text-secondary">
+                            ${$('input').val()}
+                            <img src="complete.png" class="d-none image" alt="" width="50">
+                        </div>
+                    </div>
+                    `);
+                    $('input').val("")
+                }
+            })
+
+            $('.tasks').on('click','.task-div',function(){
+                $(this).toggleClass('complete');
+                $(this).children().toggleClass('d-none');
+            })
+    
+            $('.tasks').on('dblclick','.task-div',function(){
+                $(this).parent().remove();
+                check();
+            })
+            $('.clear button').click(function(){
+                $('.tasks').empty();
+                check()
+            })
+        })
+
+    </script>
+</body>
+</html>
